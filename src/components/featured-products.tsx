@@ -6,7 +6,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/product-card"
 
-// Mock data for featured products - Adicionados mais produtos
 const featuredProducts = [
   {
     id: "1",
@@ -90,45 +89,36 @@ export default function FeaturedProducts() {
   const scrollContainerRef = React.useRef<HTMLDivElement>(null)
   const [autoScrollEnabled, setAutoScrollEnabled] = React.useState(true)
   const [currentPage, setCurrentPage] = React.useState(0)
-  const [visibleProducts, setVisibleProducts] = React.useState(4) // Valor padrão para SSR
+  const [visibleProducts, setVisibleProducts] = React.useState(4)
   const [isMounted, setIsMounted] = React.useState(false)
 
-  // Efeito para atualizar o número de produtos visíveis com base no tamanho da tela
+
   React.useEffect(() => {
     setIsMounted(true)
 
     const updateVisibleProducts = () => {
-      if (window.innerWidth >= 1280)
-        setVisibleProducts(5) // xl
-      else if (window.innerWidth >= 1024)
-        setVisibleProducts(4) // lg
-      else if (window.innerWidth >= 768)
-        setVisibleProducts(3) // md
-      else if (window.innerWidth >= 640)
-        setVisibleProducts(2) // sm
-      else setVisibleProducts(1) // xs
+      if (window.innerWidth >= 1280) setVisibleProducts(5)
+      else if (window.innerWidth >= 1024) setVisibleProducts(4)
+      else if (window.innerWidth >= 768) setVisibleProducts(3)
+      else if (window.innerWidth >= 640) setVisibleProducts(2)
+      else setVisibleProducts(1)
     }
 
-    // Atualizar na montagem inicial
     updateVisibleProducts()
 
-    // Adicionar listener para redimensionamento
     window.addEventListener("resize", updateVisibleProducts)
 
-    // Limpar listener ao desmontar
     return () => window.removeEventListener("resize", updateVisibleProducts)
   }, [])
 
-  // Calcular o número total de páginas
   const totalPages = React.useMemo(() => Math.ceil(featuredProducts.length / visibleProducts), [visibleProducts])
 
-  // Função para avançar o carrossel
   const scrollToNextPage = React.useCallback(() => {
     if (scrollContainerRef.current) {
       const nextPage = (currentPage + 1) % totalPages
       setCurrentPage(nextPage)
 
-      const scrollAmount = nextPage * visibleProducts * 280 // 280px é a largura de cada card
+      const scrollAmount = nextPage * visibleProducts * 280
       scrollContainerRef.current.scrollTo({
         left: scrollAmount,
         behavior: "smooth",
@@ -136,16 +126,15 @@ export default function FeaturedProducts() {
     }
   }, [currentPage, totalPages, visibleProducts])
 
-  // Configurar o scroll automático
   React.useEffect(() => {
-    if (!isMounted) return // Não executar no servidor
+    if (!isMounted) return
 
     let intervalId: NodeJS.Timeout | null = null
 
     if (autoScrollEnabled) {
       intervalId = setInterval(() => {
         scrollToNextPage()
-      }, 4000) // Mudar a cada 4 segundos
+      }, 4000)
     }
 
     return () => {
@@ -155,7 +144,6 @@ export default function FeaturedProducts() {
     }
   }, [autoScrollEnabled, scrollToNextPage, isMounted])
 
-  // Pausar o scroll automático quando o mouse estiver sobre o carrossel
   const handleMouseEnter = () => setAutoScrollEnabled(false)
   const handleMouseLeave = () => setAutoScrollEnabled(true)
 
@@ -174,6 +162,10 @@ export default function FeaturedProducts() {
 
   const scrollRight = () => {
     scrollToNextPage()
+  }
+
+  const formatInstallment = (value: number) => {
+    return (value / 12).toFixed(2).replace(".", ",")
   }
 
   return (
@@ -214,7 +206,6 @@ export default function FeaturedProducts() {
         </Button>
       </div>
 
-      {/* Indicadores de página */}
       <div className="mt-4 flex justify-center space-x-2">
         {isMounted &&
           Array.from({ length: totalPages }).map((_, index) => (

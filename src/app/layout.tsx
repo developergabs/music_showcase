@@ -18,16 +18,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <body className={`min-h-screen bg-background font-sans antialiased overflow-x-hidden ${inter.className}`}>
         <ThemeProvider>
           <div className="relative flex min-h-screen flex-col overflow-x-hidden">
             <MainNav />
-            {/* Removido o padding/margin padrão do conteúdo principal */}
-            <div className="flex-1">{children}</div>
-            <footer className="border-t py-6 md:py-0">
-              <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-                <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+            <div className="flex-1 w-full">{children}</div>
+            <footer className="border-t py-6">
+              <div className="container mx-auto px-4 md:px-6 max-w-7xl flex items-center justify-center">
+                <p className="text-center text-sm leading-loose text-muted-foreground">
                   &copy; {new Date().getFullYear()} Music Store. Todos os direitos reservados.
                 </p>
               </div>

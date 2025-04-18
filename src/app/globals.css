@@ -34,12 +34,10 @@
   }
 }
 
-/* Garantir que a scrollbar sempre esteja visível */
 html {
   overflow-y: scroll;
 }
 
-/* Estilizar a scrollbar para ficar mais bonita (opcional) */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -57,22 +55,15 @@ html {
   background: #555;
 }
 
-/* Classe para esconder a scrollbar visualmente, mas manter a funcionalidade */
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none;
 }
 
-/* Classe para esconder a scrollbar visualmente, mas manter a funcionalidade */
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+:root {
+  --navigation-menu-content-bg: white;
 }

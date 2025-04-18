@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ProductCard } from "@/components/product-card"
 
-// Mock data for products - Usando placeholders até que as imagens estejam disponíveis
+
 const mockProducts = [
   {
     id: "1",
@@ -112,12 +112,11 @@ export default function ProductGrid() {
         sortedProducts.sort((a, b) => a.name.localeCompare(b.name))
         break
       default:
-        // Default order (no sorting)
         sortedProducts = [...mockProducts]
     }
 
     setProducts(sortedProducts)
-    setIsDropdownOpen(false) // Fechar o dropdown após a seleção
+    setIsDropdownOpen(false)
   }
 
   return (

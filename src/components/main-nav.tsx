@@ -25,12 +25,11 @@ export function MainNav() {
     setIsMounted(true)
   }, [])
 
-  // Definir as imagens de fundo para cada categoria
   const menuImages = {
-    cordas: isMounted ? "/placeholder.svg?height=400&width=400" : "",
-    teclas: isMounted ? "/placeholder.svg?height=400&width=400" : "",
-    percussao: isMounted ? "/placeholder.svg?height=400&width=400" : "",
-    equipamentos: isMounted ? "/placeholder.svg?height=400&width=400" : "",
+    cordas: "/placeholder.svg?height=400&width=400",
+    teclas: "/placeholder.svg?height=400&width=400",
+    percussao: "/placeholder.svg?height=400&width=400",
+    equipamentos: "/placeholder.svg?height=400&width=400",
   }
 
   return (
@@ -69,11 +68,11 @@ export function MainNav() {
       <NavigationMenu className="hidden md:flex">
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="flex items-center gap-1">
+            <NavigationMenuTrigger className="flex items-center gap-1 hover:bg-amber-50 data-[state=open]:bg-amber-100">
               <Guitar className="h-4 w-4" />
               Cordas
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="max-w-[95vw]">
+            <NavigationMenuContent className="max-w-[95vw] bg-white shadow-lg rounded-md border z-50">
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                 <li className="row-span-3">
                   <NavigationMenuLink asChild>
@@ -81,7 +80,7 @@ export function MainNav() {
                       className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none focus:shadow-md relative overflow-hidden"
                       href="/produtos/cordas"
                       style={{
-                        background: "linear-gradient(rgba(217, 119, 6, 0.85), rgba(180, 83, 9, 0.95))",
+                        background: "linear-gradient(to bottom, rgb(245, 158, 11), rgb(180, 83, 9))",
                       }}
                     >
                       {isMounted && (
@@ -146,11 +145,11 @@ export function MainNav() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="flex items-center gap-1">
+            <NavigationMenuTrigger className="flex items-center gap-1 hover:bg-amber-50 data-[state=open]:bg-amber-100">
               <Keyboard className="h-4 w-4" />
               Teclas
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="max-w-[95vw]">
+            <NavigationMenuContent className="max-w-[95vw] bg-white shadow-lg rounded-md border z-50">
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                 <li className="row-span-3">
                   <NavigationMenuLink asChild>
@@ -158,7 +157,7 @@ export function MainNav() {
                       className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none focus:shadow-md relative overflow-hidden"
                       href="/produtos/teclas"
                       style={{
-                        background: "linear-gradient(rgba(217, 119, 6, 0.85), rgba(180, 83, 9, 0.95))",
+                        background: "linear-gradient(to bottom, rgb(245, 158, 11), rgb(180, 83, 9))",
                       }}
                     >
                       {isMounted && (
@@ -223,11 +222,11 @@ export function MainNav() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="flex items-center gap-1">
+            <NavigationMenuTrigger className="flex items-center gap-1 hover:bg-amber-50 data-[state=open]:bg-amber-100">
               <Drum className="h-4 w-4" />
               Percussão
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="max-w-[95vw]">
+            <NavigationMenuContent className="max-w-[95vw] bg-white shadow-lg rounded-md border z-50">
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                 <li className="row-span-3">
                   <NavigationMenuLink asChild>
@@ -235,7 +234,7 @@ export function MainNav() {
                       className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none focus:shadow-md relative overflow-hidden"
                       href="/produtos/percussao"
                       style={{
-                        background: "linear-gradient(rgba(217, 119, 6, 0.85), rgba(180, 83, 9, 0.95))",
+                        background: "linear-gradient(to bottom, rgb(245, 158, 11), rgb(180, 83, 9))",
                       }}
                     >
                       {isMounted && (
@@ -300,11 +299,11 @@ export function MainNav() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="flex items-center gap-1">
+            <NavigationMenuTrigger className="flex items-center gap-1 hover:bg-amber-50 data-[state=open]:bg-amber-100">
               <Speaker className="h-4 w-4" />
               Equipamentos
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="max-w-[95vw]">
+            <NavigationMenuContent className="max-w-[95vw] bg-white shadow-lg rounded-md border z-50">
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                 <li className="row-span-3">
                   <NavigationMenuLink asChild>
@@ -312,7 +311,7 @@ export function MainNav() {
                       className="flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none focus:shadow-md relative overflow-hidden"
                       href="/produtos/equipamentos"
                       style={{
-                        background: "linear-gradient(rgba(217, 119, 6, 0.85), rgba(180, 83, 9, 0.95))",
+                        background: "linear-gradient(to bottom, rgb(245, 158, 11), rgb(180, 83, 9))",
                       }}
                     >
                       {isMounted && (

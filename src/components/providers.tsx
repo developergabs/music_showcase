@@ -11,7 +11,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (!mounted) {
-    return null; // ou um loading spinner
+    return null;
   }
 
   return (

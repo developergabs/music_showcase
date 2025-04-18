@@ -49,7 +49,6 @@ export function ProductCard({ product, className, ...props }: ProductCardProps) 
     setCurrentImageIndex(0)
   }
 
-  // Clean up interval on unmount
   React.useEffect(() => {
     return () => {
       if (intervalRef.current) {
@@ -58,13 +57,16 @@ export function ProductCard({ product, className, ...props }: ProductCardProps) 
     }
   }, [])
 
-  // For touch devices
   const handleTouchStart = (e: React.TouchEvent) => {
     startImageTransition()
   }
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     stopImageTransition()
+  }
+
+  const formatInstallment = (value: number) => {
+    return (value / 12).toFixed(2).replace(".", ",")
   }
 
   return (
@@ -107,9 +109,7 @@ export function ProductCard({ product, className, ...props }: ProductCardProps) 
           <span className="text-2xl font-bold text-amber-600">
             R$ {product.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
           </span>
-          <span className="text-sm text-muted-foreground">
-            ou 12x de R$ {(product.price / 12).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
-          </span>
+          <span className="text-sm text-muted-foreground">ou 12x de R$ {formatInstallment(product.price)}</span>
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">

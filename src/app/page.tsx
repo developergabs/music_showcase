@@ -9,9 +9,8 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
-        {/* Seção Hero - Reduzido o padding vertical e ajustado para centralizar */}
         <section className="w-full py-6 md:py-10 lg:py-12 bg-gradient-to-r from-amber-50 to-yellow-100 flex items-center">
-          <div className="container px-4 md:px-6">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
@@ -49,9 +48,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Seção Mais Procurados */}
         <section className="w-full py-12 md:py-16 lg:py-20">
-          <div className="container px-4 md:px-6">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Mais Procurados</h2>
@@ -64,9 +62,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Seção Nosso Catálogo */}
         <section className="w-full py-12 md:py-16 lg:py-20 bg-zinc-50">
-          <div className="container px-4 md:px-6">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Nosso Catálogo</h2>

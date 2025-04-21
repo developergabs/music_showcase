@@ -89,26 +89,24 @@ export default function FeaturedProducts() {
   const scrollContainerRef = React.useRef<HTMLDivElement>(null)
   const [autoScrollEnabled, setAutoScrollEnabled] = React.useState(true)
   const [currentPage, setCurrentPage] = React.useState(0)
-  const [visibleProducts, setVisibleProducts] = React.useState(4)
+  const [visibleProducts, setVisibleProducts] = React.useState(3)
   const [isMounted, setIsMounted] = React.useState(false)
-
+  const [containerWidth, setContainerWidth] = React.useState(0)
 
   React.useEffect(() => {
     setIsMounted(true)
 
-    const updateVisibleProducts = () => {
-      if (window.innerWidth >= 1280) setVisibleProducts(5)
-      else if (window.innerWidth >= 1024) setVisibleProducts(4)
-      else if (window.innerWidth >= 768) setVisibleProducts(3)
-      else if (window.innerWidth >= 640) setVisibleProducts(2)
-      else setVisibleProducts(1)
+    const updateContainerWidth = () => {
+      if (scrollContainerRef.current) {
+        setContainerWidth(scrollContainerRef.current.clientWidth)
+      }
     }
 
-    updateVisibleProducts()
+    updateContainerWidth()
 
-    window.addEventListener("resize", updateVisibleProducts)
+    window.addEventListener("resize", updateContainerWidth)
 
-    return () => window.removeEventListener("resize", updateVisibleProducts)
+    return () => window.removeEventListener("resize", updateContainerWidth)
   }, [])
 
   const totalPages = React.useMemo(() => Math.ceil(featuredProducts.length / visibleProducts), [visibleProducts])
@@ -118,13 +116,13 @@ export default function FeaturedProducts() {
       const nextPage = (currentPage + 1) % totalPages
       setCurrentPage(nextPage)
 
-      const scrollAmount = nextPage * visibleProducts * 280
+      const scrollAmount = nextPage * containerWidth
       scrollContainerRef.current.scrollTo({
         left: scrollAmount,
         behavior: "smooth",
       })
     }
-  }, [currentPage, totalPages, visibleProducts])
+  }, [currentPage, totalPages, containerWidth])
 
   React.useEffect(() => {
     if (!isMounted) return
@@ -152,7 +150,7 @@ export default function FeaturedProducts() {
       const newPage = currentPage > 0 ? currentPage - 1 : totalPages - 1
       setCurrentPage(newPage)
 
-      const scrollAmount = newPage * visibleProducts * 280
+      const scrollAmount = newPage * containerWidth
       scrollContainerRef.current.scrollTo({
         left: scrollAmount,
         behavior: "smooth",
@@ -164,9 +162,7 @@ export default function FeaturedProducts() {
     scrollToNextPage()
   }
 
-  const formatInstallment = (value: number) => {
-    return (value / 12).toFixed(2).replace(".", ",")
-  }
+  const cardWidth = containerWidth > 0 ? containerWidth / visibleProducts : 0
 
   return (
     <div className="relative mt-8">
@@ -181,18 +177,32 @@ export default function FeaturedProducts() {
           <span className="sr-only">Scroll left</span>
         </Button>
       </div>
-      <div
-        ref={scrollContainerRef}
-        className="flex space-x-4 overflow-x-auto pb-4 pt-2 scrollbar-hide"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {featuredProducts.map((product) => (
-          <div key={product.id} className="w-[280px] flex-none">
-            <ProductCard product={product} />
-          </div>
-        ))}
+      <div className="overflow-hidden">
+        <div
+          ref={scrollContainerRef}
+          className="flex snap-x snap-mandatory overflow-x-hidden"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          {Array.from({ length: totalPages }).map((_, pageIndex) => (
+            <div
+              key={pageIndex}
+              className="flex-none w-full flex justify-center gap-4"
+              style={{ width: containerWidth > 0 ? `${containerWidth}px` : "100%" }}
+            >
+              {featuredProducts.slice(pageIndex * visibleProducts, (pageIndex + 1) * visibleProducts).map((product) => (
+                <div
+                  key={product.id}
+                  className="flex-none"
+                  style={{ width: cardWidth > 0 ? `${cardWidth - 16}px` : "33%" }} // 16px para o gap
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
       <div className="absolute right-0 top-1/2 z-10 -translate-y-1/2">
         <Button
@@ -216,7 +226,7 @@ export default function FeaturedProducts() {
                 setCurrentPage(index)
                 if (scrollContainerRef.current) {
                   scrollContainerRef.current.scrollTo({
-                    left: index * visibleProducts * 280,
+                    left: index * containerWidth,
                     behavior: "smooth",
                   })
                 }

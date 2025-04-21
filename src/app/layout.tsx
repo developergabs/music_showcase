@@ -1,6 +1,9 @@
 import type React from "react"
 import { MainNav } from "@/components/main-nav"
 import { ThemeProvider } from "@/components/theme-provider"
+import { CartProvider } from "@/contexts/cart-context"
+import { CartDrawer } from "@/components/cart-drawer"
+import { Toaster } from "@/components/ui/toaster"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
@@ -21,17 +24,21 @@ export default function RootLayout({
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={`min-h-screen bg-background font-sans antialiased overflow-x-hidden ${inter.className}`}>
         <ThemeProvider>
-          <div className="relative flex min-h-screen flex-col overflow-x-hidden">
-            <MainNav />
-            <div className="flex-1 w-full">{children}</div>
-            <footer className="border-t py-6">
-              <div className="container mx-auto px-4 md:px-6 max-w-7xl flex items-center justify-center">
-                <p className="text-center text-sm leading-loose text-muted-foreground">
-                  &copy; {new Date().getFullYear()} Music Store. Todos os direitos reservados.
-                </p>
-              </div>
-            </footer>
-          </div>
+          <CartProvider>
+            <div className="relative flex min-h-screen flex-col overflow-x-hidden">
+              <MainNav />
+              <div className="flex-1 w-full">{children}</div>
+              <footer className="border-t py-6">
+                <div className="container mx-auto px-4 md:px-6 max-w-7xl flex items-center justify-center">
+                  <p className="text-center text-sm leading-loose text-muted-foreground">
+                    &copy; {new Date().getFullYear()} Music Store. Todos os direitos reservados.
+                  </p>
+                </div>
+              </footer>
+              <CartDrawer />
+            </div>
+            <Toaster />
+          </CartProvider>
         </ThemeProvider>
       </body>
     </html>

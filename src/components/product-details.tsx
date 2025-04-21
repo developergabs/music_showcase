@@ -3,10 +3,12 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ChevronLeft, ChevronRight, Heart, Share2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, Heart, Share2, ShoppingCart } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useCart } from "@/contexts/cart-context"
+import { useToast } from "@/hooks/use-toast"
 
 interface Product {
   id: string
@@ -27,6 +29,8 @@ const formatInstallment = (value: number) => {
 }
 
 export function ProductDetails({ product }: { product: Product }) {
+  const { addItem, setIsCartOpen } = useCart()
+  const { toast } = useToast()
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0)
   const [selectedColor, setSelectedColor] = React.useState(
     product.specifications.cores ? product.specifications.cores[0] : "",
@@ -40,11 +44,20 @@ export function ProductDetails({ product }: { product: Product }) {
     setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length)
   }
 
-  const handleWhatsAppClick = () => {
-    const message = encodeURIComponent(
-      `Olá! Tenho interesse em comprar esse produto e gostaria de falar com um dos vendedores: ${product.name}`,
-    )
-    window.open(`https://wa.me/5511999999999?text=${message}`, "_blank")
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      slug: product.slug,
+    })
+
+    toast({
+      title: "Produto adicionado ao carrinho",
+      description: `${product.name} foi adicionado ao seu carrinho.`,
+      duration: 3000,
+    })
   }
 
   return (
@@ -137,8 +150,9 @@ export function ProductDetails({ product }: { product: Product }) {
           )}
 
           <div className="mt-8 flex flex-col gap-3">
-            <Button className="bg-amber-600 hover:bg-amber-700" size="lg" onClick={handleWhatsAppClick}>
-              Comprar
+            <Button className="bg-amber-600 hover:bg-amber-700" size="lg" onClick={handleAddToCart}>
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Adicionar ao Carrinho
             </Button>
             <div className="flex gap-2">
               <Button variant="outline" className="flex-1">
@@ -154,18 +168,24 @@ export function ProductDetails({ product }: { product: Product }) {
 
           <div className="mt-8">
             <Tabs defaultValue="description">
-              <TabsList className="w-full">
-                <TabsTrigger value="description" className="flex-1">
+              <TabsList className="w-full border-b rounded-none p-0 h-auto">
+                <TabsTrigger
+                  value="description"
+                  className="flex-1 rounded-none border-b-2 border-transparent py-3 font-medium data-[state=active]:border-amber-600 data-[state=active]:text-amber-600 data-[state=active]:shadow-none"
+                >
                   Descrição
                 </TabsTrigger>
-                <TabsTrigger value="specifications" className="flex-1">
+                <TabsTrigger
+                  value="specifications"
+                  className="flex-1 rounded-none border-b-2 border-transparent py-3 font-medium data-[state=active]:border-amber-600 data-[state=active]:text-amber-600 data-[state=active]:shadow-none"
+                >
                   Especificações
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value="description" className="mt-4 text-sm leading-relaxed">
+              <TabsContent value="description" className="mt-4 text-sm leading-relaxed border rounded-md p-4 bg-white">
                 <p>{product.description}</p>
               </TabsContent>
-              <TabsContent value="specifications" className="mt-4">
+              <TabsContent value="specifications" className="mt-4 border rounded-md p-4 bg-white">
                 <div className="space-y-2 text-sm">
                   {Object.entries(product.specifications)
                     .filter(([key]) => key !== "cores")

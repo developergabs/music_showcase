@@ -87,7 +87,11 @@ const mockProducts = [
   },
 ]
 
-export default function ProductGrid() {
+interface ProductGridProps {
+  searchQuery?: string
+}
+
+export default function ProductGrid({ searchQuery = "" }: ProductGridProps) {
   const [products, setProducts] = React.useState(mockProducts)
   const [sortOrder, setSortOrder] = React.useState<"default" | "price-asc" | "price-desc" | "name-asc">("default")
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false)
@@ -97,9 +101,26 @@ export default function ProductGrid() {
     setIsMounted(true)
   }, [])
 
+  React.useEffect(() => {
+    if (!searchQuery.trim()) {
+      setProducts(mockProducts)
+      return
+    }
+
+    const normalizedQuery = searchQuery.toLowerCase().trim()
+    const filtered = mockProducts.filter(
+      (product) =>
+        product.name.toLowerCase().includes(normalizedQuery) ||
+        product.description.toLowerCase().includes(normalizedQuery) ||
+        product.category.toLowerCase().includes(normalizedQuery),
+    )
+
+    setProducts(filtered)
+  }, [searchQuery])
+
   const handleSort = (order: typeof sortOrder) => {
     setSortOrder(order)
-    let sortedProducts = [...mockProducts]
+    let sortedProducts = [...products]
 
     switch (order) {
       case "price-asc":
@@ -112,7 +133,7 @@ export default function ProductGrid() {
         sortedProducts.sort((a, b) => a.name.localeCompare(b.name))
         break
       default:
-        sortedProducts = [...mockProducts]
+        sortedProducts = searchQuery ? [...products] : [...mockProducts]
     }
 
     setProducts(sortedProducts)
@@ -140,11 +161,20 @@ export default function ProductGrid() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {products.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-12">
+          <p className="text-lg text-muted-foreground">Nenhum produto encontrado para sua busca.</p>
+          <Button variant="outline" className="mt-4" onClick={() => window.history.back()}>
+            Voltar
+          </Button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Guitar, Keyboard, Drum, Speaker, Search, ShoppingCart, Menu } from "lucide-react"
+import { Guitar, Keyboard, Drum, Speaker, ShoppingCart, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
@@ -14,12 +14,13 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Input } from "@/components/ui/input"
+import { useCart } from "@/contexts/cart-context"
+import { SearchBar } from "@/components/search-bar"
 
 export function MainNav() {
   const pathname = usePathname()
-  const [isSearchOpen, setIsSearchOpen] = React.useState(false)
   const [isMounted, setIsMounted] = React.useState(false)
+  const { setIsCartOpen, totalItems } = useCart()
 
   React.useEffect(() => {
     setIsMounted(true)
@@ -378,33 +379,14 @@ export function MainNav() {
         </NavigationMenuList>
       </NavigationMenu>
       <div className="ml-auto flex items-center space-x-4">
-        {isSearchOpen ? (
-          <div className="relative">
-            <Input
-              type="search"
-              placeholder="Buscar produtos..."
-              className="w-[200px] md:w-[300px]"
-              autoFocus
-              onBlur={() => setIsSearchOpen(false)}
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-0 top-0 h-full"
-              onClick={() => setIsSearchOpen(false)}
-            >
-              <Search className="h-4 w-4" />
-              <span className="sr-only">Buscar</span>
-            </Button>
-          </div>
-        ) : (
-          <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
-            <Search className="h-5 w-5" />
-            <span className="sr-only">Buscar</span>
-          </Button>
-        )}
-        <Button variant="ghost" size="icon">
+        <SearchBar />
+        <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(true)} className="relative">
           <ShoppingCart className="h-5 w-5" />
+          {isMounted && totalItems > 0 && (
+            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-600 text-xs text-white">
+              {totalItems}
+            </span>
+          )}
           <span className="sr-only">Carrinho</span>
         </Button>
       </div>
